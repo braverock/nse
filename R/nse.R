@@ -16,17 +16,18 @@
 #'nbatch = 30
 #'nse::nse.geyer(x = Ts1, nbatch = nbatch, type =  "bm")
 #'nse::nse.geyer(x = Ts, nbatch = nbatch , type =  "bm")
-#'nse::nse.geyer(x = Ts1 , type = "iseq")
-#'nse::nse.geyer(x = Ts1, nbatch = nbatch, type = "iseq.bm")
+#'nse::nse.geyer(x = Ts1 , type = "iseq", iseq.type = "pos")
+#'nse::nse.geyer(x = Ts1, nbatch = nbatch, type = "iseq.bm", iseq.type = "con")
 #'  
 #'     @param x A numeric vector or a matrix(only for type "bm").
 #'     @param type The type c("iseq","bm","iseq.bm").
 #'     @param nbatch An optional parameter for the type bm and iseq.bm.
+#'     @param iseq.type constraints on function, ("pos") nonnegative, ("dec") nonnegative and nonincreasing, and ("con") nonnegative, nonincreasing, and convex. The default value is "pos".
 #'     @import mcmc
 #'     @references Geyer, Charles J. "Practical markov chain monte carlo." Statistical Science (1992): 473-483.
 #'     @return  The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
 #'@export
-nse.geyer <- function(x, type, nbatch = 30) {
+nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
   
   if(is.vector(x)) {
     x = matrix(x,ncol = 1)
@@ -36,7 +37,21 @@ nse.geyer <- function(x, type, nbatch = 30) {
   if(type == "iseq") {
     
     f.error.multivariate(x) 
-    iseq = mcmc::initseq(x = x)$var.pos / size # Intial sqequence Geyer (1992)
+    
+    if(iseq.type == "pos"){
+      var.iseq = mcmc::initseq(x = x)$var.pos
+    } else if(iseq.type == "dec"){
+      
+      var.iseq = mcmc::initseq(x = x)$var.dec
+    } else if(iseq.type == "con"){
+      
+      var.iseq = mcmc::initseq(x = x)$var.con
+    } else{
+      stop("Invalid iseq.type : must be one of c('pos','dec','con')")
+    }
+    
+    
+    iseq = var.iseq / size # Intial sqequence Geyer (1992)
     out = iseq
     
   } else if(type == "bm"){
@@ -52,9 +67,23 @@ nse.geyer <- function(x, type, nbatch = 30) {
     
   } else if(type == "iseq.bm"){
     
+
     f.error.multivariate(x)
     batch  = unlist(lapply(split(x, ceiling(seq_along(x) / (size / nbatch))), FUN = mean))
-    iseq.bm = mcmc::initseq(x = batch)$var.pos / nbatch
+    
+    if(iseq.type == "pos"){
+      var.iseq = mcmc::initseq(batch)$var.pos
+    } else if(iseq.type == "dec"){
+      
+      var.iseq = mcmc::initseq(x = batch)$var.dec
+    } else if(iseq.type == "con"){
+      
+      var.iseq = mcmc::initseq(x = batch)$var.con
+    } else{
+      stop("Invalid iseq.type : must be one of c('pos','dec','con')")
+    }
+    
+    iseq.bm = var.iseq / nbatch
     out = iseq.bm
     
   } else {
@@ -67,7 +96,7 @@ nse.geyer <- function(x, type, nbatch = 30) {
 
 #' The spectral density at zero.
 #' @description Calculate the variance of the mean with the spectrum at zero estimator.
-#' @details  This is a wrapper around \link[coda]{spectrum0.ar} form the CODA package.
+#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package and \link[sapa]{SDF} from the sapa package.
 #' @examples 
 #'n = 1000
 #'ar = c(0.9)
@@ -76,20 +105,37 @@ nse.geyer <- function(x, type, nbatch = 30) {
 #'  
 #'Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
 #'  
-#'nse::nse.spec0(x = Ts1)
+#'nse::nse.spec0(x = Ts1, method = "AR")
 #'  
 #'     @param x  A numeric vector.
+#'     @param method  A character string denoting the method to use in estimating the spectral density function
 #'     @return The variance estimator.
 #'     @references Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
-#'     @import coda
+#'     @references D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
+#'     @import coda, sapa
 #'@export
-nse.spec0 <- function(x) {
+nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper")) {
   if(is.vector(x)) {
     x = matrix(x,ncol = 1)
   }
   f.error.multivariate(x)
   size = dim(x)[1]
-  out = coda::spectrum0.ar(x)$spec/size
+  
+  if(method == "AR"){
+    spec0 = coda::spectrum0.ar(x)$spec
+  }else if(method == "lag window") {
+    spec0 = sapa::SDF(x, method="lag window", single.sided = TRUE)[1]
+    
+  }else if(method == "wosa") {
+    spec0 = sapa::SDF(x, method="wosa", single.sided = TRUE)[1]
+    
+  }else if(method == "multitaper") {
+    spec0 = sapa::SDF(x, method="multitaper", single.sided = TRUE)[1]
+    
+  }else{
+    stop("Invalid spec.type : must be one of c('AR','direct','lag window','wosa','multitaper')")
+  }
+  out = spec0/size
   out = unname(out)
   return(out)
 }

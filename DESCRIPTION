@@ -4,10 +4,18 @@ Title: Numerical Standard Error Estimators
 Version: 1-00.01
 Date: 2015-12-17
 Author: Keven Bluteau, David Ardia
-Maintainer: Keven Bluteau <keven.bluteau.1@ulaval.ca>, David Ardia <David.Ardia@fsa.ulaval.ca>
-Description: Offer mutliple ways to calculate numerical standard error (NSE) of univariate (or multivariate in some cases) time series.
+Maintainer: Keven Bluteau <keven.bluteau.1@ulaval.ca>, David Ardia
+    <David.Ardia@fsa.ulaval.ca>
+Description: Offer mutliple ways to calculate numerical standard error (NSE) of
+    univariate (or multivariate in some cases) time series.
 License: GPL (>= 2)
-Imports: Rcpp (>= 0.12.0), coda, mcmc, np, sandwich
+Imports:
+    Rcpp (>= 0.12.0),
+    coda,
+    mcmc,
+    np,
+    sandwich,
+    sapa
 LinkingTo: Rcpp
 NeedsCompilation: yes
-
+RoxygenNote: 5.0.1
