@@ -6,6 +6,16 @@
 \usage{
 nse.boot(x, nb, type = "stationary")
 }
+\arguments{
+\item{x}{A numeric vector or a matrix.}
+
+\item{nb}{The number of bootstrap replication.}
+
+\item{type}{The bootstrap schemes c("stationary","circular").}
+}
+\value{
+The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
+}
 \description{
 Calculate the variance of the mean with a bootstrap variance estimator.
 }
@@ -30,15 +40,16 @@ nse::nse.boot(x = Ts1, nb =  nb, type = "stationary")
 nse::nse.boot(x = Ts, nb =  nb, type = "stationary")
 nse::nse.boot(x = Ts1, nb =  nb, type = "circular")
 nse::nse.boot(x = Ts, nb =  nb, type = "circular")
- 
-    @param x       A numeric vector or a matrix.
-    @param nb   The number of bootstrap replication.
-    @param type    The bootstrap schemes c("stationary","circular").
-    @return The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
-   @references Politis, Dimitris N., and Joseph P. Romano. "A circular block-resampling procedure for stationary data." Exploring the limits of bootstrap (1992): 263-270.
-   @references Politis, Dimitris N., and Halbert White. "Automatic block-length selection for the dependent bootstrap." Econometric Reviews 23.1 (2004): 53-70.
-   @references Patton, Andrew, Dimitris N. Politis, and Halbert White. "Correction to "Automatic block-length selection for the dependent bootstrap" by D. Politis and H. White." Econometric Reviews 28.4 (2009): 372-375.
-   @references Politis, Dimitris N., and Joseph P. Romano. "The stationary bootstrap." Journal of the American Statistical association 89.428 (1994): 1303-1313.
-   @references Hayfield, Tristen, and Jeffrey S. Racine. "Nonparametric econometrics: The np package." Journal of statistical software 27.5 (2008): 1-32.
+}
+\references{
+Politis, Dimitris N., and Joseph P. Romano. "A circular block-resampling procedure for stationary data." Exploring the limits of bootstrap (1992): 263-270.
+
+Politis, Dimitris N., and Halbert White. "Automatic block-length selection for the dependent bootstrap." Econometric Reviews 23.1 (2004): 53-70.
+
+Patton, Andrew, Dimitris N. Politis, and Halbert White. "Correction to "Automatic block-length selection for the dependent bootstrap" by D. Politis and H. White." Econometric Reviews 28.4 (2009): 372-375.
+
+Politis, Dimitris N., and Joseph P. Romano. "The stationary bootstrap." Journal of the American Statistical association 89.428 (1994): 1303-1313.
+
+Hayfield, Tristen, and Jeffrey S. Racine. "Nonparametric econometrics: The np package." Journal of statistical software 27.5 (2008): 1-32.
 }
 

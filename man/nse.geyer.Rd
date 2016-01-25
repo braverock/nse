@@ -2,44 +2,31 @@
 % Please edit documentation in R/nse.R
 \name{nse.geyer}
 \alias{nse.geyer}
-\title{Variance of sample mean of functional of reversible Markov chain using methods of Geyer (1992).
- @description Calculate Geyer (1992) NSE estimator.
- @details  The type "iseq" is a wrapper around \link[mcmc]{initseq} from the MCMC package and gives the positive intial sequence estimator.
-  The type "bm" is the batch mean estimator.
-  The type "iseq.bm" is a combinaison of the two.
- @examples
-n = 1000
-ar = c(0.9,0.6)
-mean = c(1,5)
-sd = c(10,2)
- 
-Ts1 = as.vector(arima.sim(n = n, list(ar = ar[1]), sd = sd[1]) + mean[1])
-Ts2 = as.vector(arima.sim(n = n, list(ar = ar[2]), sd = sd[2]) + mean[2])
-Ts = cbind(Ts1,Ts2)
- 
-nbatch = 30
-nse::nse.geyer(x = Ts1, nbatch = nbatch, type =  "bm")
-nse::nse.geyer(x = Ts, nbatch = nbatch , type =  "bm")
-nse::nse.geyer(x = Ts1 , type = "iseq", iseq.type = "pos")
-nse::nse.geyer(x = Ts1, nbatch = nbatch, type = "iseq.bm", iseq.type = "con")
- 
-    @param x A numeric vector or a matrix(only for type "bm").
-    @param type The type c("iseq","bm","iseq.bm").
-    @param nbatch An optional parameter for the type bm and iseq.bm.
-    @param iseq.type constraints on function, ("pos") nonnegative, ("dec") nonnegative and nonincreasing, and ("con") nonnegative, nonincreasing, and convex. The default value is "pos".
-    @import mcmc
-    @references Geyer, Charles J. "Practical markov chain monte carlo." Statistical Science (1992): 473-483.
-    @return  The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.}
+\title{Variance of sample mean of functional of reversible Markov chain using methods of Geyer (1992).}
 \usage{
 nse.geyer(x, type, nbatch = 30, iseq.type = "pos")
 }
+\arguments{
+\item{x}{A numeric vector or a matrix(only for type "bm").}
+
+\item{type}{The type c("iseq","bm","iseq.bm").}
+
+\item{nbatch}{An optional parameter for the type m and iseq.bm.}
+
+\item{iseq.type}{constraints on function, ("pos") nonnegative, ("dec") nonnegative and nonincreasing, and ("con") nonnegative, nonincreasing, and convex. The default value is "pos".}
+}
+\value{
+The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
+}
 \description{
-Variance of sample mean of functional of reversible Markov chain using methods of Geyer (1992).
- @description Calculate Geyer (1992) NSE estimator.
- @details  The type "iseq" is a wrapper around \link[mcmc]{initseq} from the MCMC package and gives the positive intial sequence estimator.
-  The type "bm" is the batch mean estimator.
-  The type "iseq.bm" is a combinaison of the two.
- @examples
+Calculate Geyer (1992) NSE estimator.
+}
+\details{
+The type "iseq" is a wrapper around \link[mcmc]{initseq} from the MCMC package and gives the positive intial sequence estimator.
+ The type "bm" is the batch mean estimator.
+ The type "iseq.bm" is a combinaison of the two.
+}
+\examples{
 n = 1000
 ar = c(0.9,0.6)
 mean = c(1,5)
@@ -50,17 +37,13 @@ Ts2 = as.vector(arima.sim(n = n, list(ar = ar[2]), sd = sd[2]) + mean[2])
 Ts = cbind(Ts1,Ts2)
  
 nbatch = 30
-nse::nse.geyer(x = Ts1, nbatch = nbatch, type =  "bm")
+nse::nse.geyer(x = Ts1, nbatch = nbatch, type =  "bm",)
 nse::nse.geyer(x = Ts, nbatch = nbatch , type =  "bm")
 nse::nse.geyer(x = Ts1 , type = "iseq", iseq.type = "pos")
 nse::nse.geyer(x = Ts1, nbatch = nbatch, type = "iseq.bm", iseq.type = "con")
  
-    @param x A numeric vector or a matrix(only for type "bm").
-    @param type The type c("iseq","bm","iseq.bm").
-    @param nbatch An optional parameter for the type bm and iseq.bm.
-    @param iseq.type constraints on function, ("pos") nonnegative, ("dec") nonnegative and nonincreasing, and ("con") nonnegative, nonincreasing, and convex. The default value is "pos".
-    @import mcmc
-    @references Geyer, Charles J. "Practical markov chain monte carlo." Statistical Science (1992): 473-483.
-    @return  The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
+}
+\references{
+Geyer, Charles J. "Practical markov chain monte carlo." Statistical Science (1992): 473-483.
 }
 

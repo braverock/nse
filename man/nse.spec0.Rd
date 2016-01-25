@@ -6,6 +6,14 @@
 \usage{
 nse.spec0(x, method = c("AR", "lag window", "wosa", "multitaper"))
 }
+\arguments{
+\item{x}{A numeric vector.}
+
+\item{method}{A character string denoting the method to use in estimating the spectral density function}
+}
+\value{
+The variance estimator.
+}
 \description{
 Calculate the variance of the mean with the spectrum at zero estimator.
 }
@@ -22,11 +30,10 @@ Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
  
 nse::nse.spec0(x = Ts1, method = "AR")
  
-    @param x  A numeric vector.
-    @param method  A character string denoting the method to use in estimating the spectral density function
-    @return The variance estimator.
-    @references Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
-    @references D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
-    @import coda, sapa
+}
+\references{
+Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
+
+D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
 }
 

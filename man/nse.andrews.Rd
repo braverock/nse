@@ -6,6 +6,16 @@
 \usage{
 nse.andrews(x, prewhite = FALSE, type = "Bartlett")
 }
+\arguments{
+\item{x}{A numeric vector or matrix.}
+
+\item{prewhite}{A bool indicating if the time-serie will be prewhitened before analysis.}
+
+\item{type}{The type of kernel used c("Bartlett","Parzen","Quadratic Spectral","Truncated","Tukey-Hanning").}
+}
+\value{
+The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
+}
 \description{
 Calculate the variance of the mean with the kernel based variance estimator indtroduced by Andrews (1991).
 }
@@ -13,11 +23,11 @@ Calculate the variance of the mean with the kernel based variance estimator indt
 This is a wrapper around \link[sandwich]{lrvar} from the sandwich package and use Andrews (1991) automatic bandwidth estimator.
 }
 \examples{
+
 n = 1000
 ar = c(0.9,0.6)
 mean = c(1,5)
 sd = c(10,2)
- 
 Ts1 = as.vector(arima.sim(n = n, list(ar = ar[1]), sd = sd[1]) + mean[1])
 Ts2 = as.vector(arima.sim(n = n, list(ar = ar[2]), sd = sd[2]) + mean[2])
 Ts = cbind(Ts1,Ts2)
@@ -45,14 +55,12 @@ nse::nse.andrews(x = Ts1, type = "Tukey-Hanning")
 nse::nse.andrews(x = Ts, type = "Tukey-Hanning")
 nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Tukey-Hanning")
 nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Tukey-Hanning")
- 
-    @param x       A numeric vector or matrix.
-    @param prewhite  A bool indicating if the time-serie will be prewhitened before analysis.
-    @param type  The type of kernel used c("Bartlett","Parzen","Quadratic Spectral","Truncated","Tukey-Hanning").
-    @return The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
-    @references Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
-    @references Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
-    @references Newey, Whitney K., and Kenneth D. West. "A simple, positive semi-definite, heteroskedasticity and autocorrelationconsistent covariance matrix.", Econometrica: Journal of the Econometric Society 55.03 (1987) : 703-708.
-    @import sandwich
+}
+\references{
+Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
+
+Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
+
+Newey, Whitney K., and Kenneth D. West. "A simple, positive semi-definite, heteroskedasticity and autocorrelationconsistent covariance matrix.", Econometrica: Journal of the Econometric Society 55.03 (1987) : 703-708.
 }
 

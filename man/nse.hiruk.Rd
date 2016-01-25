@@ -6,6 +6,16 @@
 \usage{
 nse.hiruk(x, prewhite = FALSE, type = "Bartlett")
 }
+\arguments{
+\item{x}{A numeric vector.}
+
+\item{prewhite}{A bool indicating if the time-serie will be prewhitened before analysis.}
+
+\item{type}{The type of kernel used c("Bartlett","Parzen").}
+}
+\value{
+The variance estimator.
+}
 \description{
 Calculate the variance of the mean with the kernel based variance estimator by Andrews (1991) using Hirukawa (2010) automatic bandwidth estimator.
 }
@@ -25,14 +35,12 @@ nse::nse.hiruk(x = Ts1, prewhite = TRUE, type = "Bartlett")
  
 nse::nse.hiruk(x = Ts1, type = "Parzen")
 nse::nse.hiruk(x = Ts1, prewhite = TRUE, type = "Parzen")
- 
-    @param x      A numeric vector.
-    @param prewhite A bool indicating if the time-serie will be prewhitened before analysis.
-    @param type The type of kernel used c("Bartlett","Parzen").
-    @references Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
-    @references Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
-    @references Hirukawa, Masayuki. "A two-stage plug-in bandwidth selection and its implementation for covariance estimation." Econometric Theory 26.03 (2010): 710-743.
-    @import sandwich
-    @return The variance estimator.
+}
+\references{
+Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
+
+Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
+
+Hirukawa, Masayuki. "A two-stage plug-in bandwidth selection and its implementation for covariance estimation." Econometric Theory 26.03 (2010): 710-743.
 }
 
