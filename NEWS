@@ -1,2 +1,5 @@
 Changes in Version 1-00.01
   o first version released
+Changes in Version 1-00.02
+  o fixed bug in Roxygen documentation
+

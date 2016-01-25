@@ -1,11 +1,11 @@
 Package: nse
 Type: Package
 Title: Numerical Standard Error Estimators
-Version: 1-00.01
-Date: 2015-12-17
+Version: 1-00.02
+Date: 2016-01-25
 Author: Keven Bluteau, David Ardia
-Maintainer: Keven Bluteau <keven.bluteau.1@ulaval.ca>, David Ardia
-    <David.Ardia@fsa.ulaval.ca>
+Maintainer: Keven Bluteau <keven.bluteau@unine.ch>, David Ardia
+    <david.ardia@unine.ch>
 Description: Offer mutliple ways to calculate numerical standard error (NSE) of
     univariate (or multivariate in some cases) time series.
 License: GPL (>= 2)
