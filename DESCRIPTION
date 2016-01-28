@@ -1,8 +1,8 @@
 Package: nse
 Type: Package
 Title: Numerical Standard Error Estimators
-Version: 1-00.02
-Date: 2016-01-25
+Version: 1-00.03
+Date: 2016-01-28
 Author: Keven Bluteau, David Ardia
 Maintainer: Keven Bluteau <keven.bluteau@unine.ch>, David Ardia
     <david.ardia@unine.ch>
@@ -15,7 +15,8 @@ Imports:
     mcmc,
     np,
     sandwich,
-    sapa
+    sapa,
+    psd
 LinkingTo: Rcpp
 NeedsCompilation: yes
 RoxygenNote: 5.0.1

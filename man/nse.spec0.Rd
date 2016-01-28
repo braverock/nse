@@ -4,12 +4,15 @@
 \alias{nse.spec0}
 \title{The spectral density at zero.}
 \usage{
-nse.spec0(x, method = c("AR", "lag window", "wosa", "multitaper"))
+nse.spec0(x, method = c("AR", "lag window", "wosa", "multitaper", "asm"),
+  prewhite = FALSE)
 }
 \arguments{
 \item{x}{A numeric vector.}
 
 \item{method}{A character string denoting the method to use in estimating the spectral density function}
+
+\item{prewhite}{Prewhite the serie before analysis}
 }
 \value{
 The variance estimator.
@@ -18,7 +21,7 @@ The variance estimator.
 Calculate the variance of the mean with the spectrum at zero estimator.
 }
 \details{
-This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package and \link[sapa]{SDF} from the sapa package.
+This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the sapa package and \link[psd]{psdcore} the PSD package.
 }
 \examples{
 n = 1000
@@ -28,12 +31,14 @@ sd = c(10)
  
 Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
  
-nse::nse.spec0(x = Ts1, method = "AR")
+nse::nse.spec0(x = Ts1, method = "AR", prewhite = FALSE)
  
 }
 \references{
 Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
 
 D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
+
+Barbour, A. J. and R. L. Parker (2014), "psd: Adaptive, sine multitaper power spectral density estimation for R", Computers & Geosciences Volume 63 February 2014 : 1-8
 }
 

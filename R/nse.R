@@ -96,13 +96,15 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
 
 #' The spectral density at zero.
 #' @description Calculate the variance of the mean with the spectrum at zero estimator.
-#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package and \link[sapa]{SDF} from the sapa package.
+#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the sapa package and \link[psd]{psdcore} the PSD package.
 #' @param x  A numeric vector.
 #' @param method  A character string denoting the method to use in estimating the spectral density function
+#' @param prewhite Prewhite the serie before analysis
 #' @return The variance estimator.
 #' @references Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
 #' @references D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
-#' @import coda sapa
+#' @references Barbour, A. J. and R. L. Parker (2014), "psd: Adaptive, sine multitaper power spectral density estimation for R", Computers & Geosciences Volume 63 February 2014 : 1-8
+#' @import coda sapa psd
 #' @examples 
 #'n = 1000
 #'ar = c(0.9)
@@ -111,15 +113,22 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
 #'  
 #'Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
 #'  
-#'nse::nse.spec0(x = Ts1, method = "AR")
+#'nse::nse.spec0(x = Ts1, method = "AR", prewhite = FALSE)
 #'  
 #'@export
-nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper")) {
-  if(is.vector(x)) {
+nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper","asm"), prewhite = FALSE) {
+  scale = 1
+  if(is.vector(x)){
     x = matrix(x,ncol = 1)
   }
   f.error.multivariate(x)
   size = dim(x)[1]
+  if (prewhite == TRUE){
+    ar.model = psd::prewhiten(as.vector(x), AR.max = 1,plot = FALSE)
+    x = ar.model$prew_ar
+    scale = 1/(1-ar.model$ardfit$ar)^2
+    if (length(scale)==0) {scale = 1}
+  }
   
   if(method == "AR"){
     spec0 = coda::spectrum0.ar(x)$spec
@@ -132,9 +141,12 @@ nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper")) {
   }else if(method == "multitaper") {
     spec0 = sapa::SDF(x, method="multitaper", single.sided = TRUE)[1]
     
+  }else if(method == "asm") {
+    spec0 = psd::psdcore(as.vector(x))$spec[1]
   }else{
-    stop("Invalid spec.type : must be one of c('AR','direct','lag window','wosa','multitaper')")
+    stop("Invalid spec.type : must be one of c('AR',lag window','wosa','multitaper','asm')")
   }
+  spec0 = spec0*scale
   out = spec0/size
   out = unname(out)
   return(out)
