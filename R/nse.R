@@ -2,9 +2,10 @@
 #' @description Calculate Geyer (1992) NSE estimator.
 #' @details  The type "iseq" is a wrapper around \link[mcmc]{initseq} from the MCMC package and gives the positive intial sequence estimator.
 #'  The type "bm" is the batch mean estimator.
+#'  The type "obm" is the overlapping batch mean estimator.
 #'  The type "iseq.bm" is a combinaison of the two.
 #' @param x A numeric vector or a matrix(only for type "bm").
-#' @param type The type c("iseq","bm","iseq.bm").
+#' @param type The type c("iseq","bm","obm","iseq.bm").
 #' @param nbatch An optional parameter for the type m and iseq.bm.
 #' @param iseq.type constraints on function, ("pos") nonnegative, ("dec") nonnegative and nonincreasing, and ("con") nonnegative, nonincreasing, and convex. The default value is "pos".
 #' @import mcmc
@@ -59,11 +60,15 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
     ncol = dim(x)[2]
     x = as.data.frame(x)
     batch = matrix(unlist(lapply(split(x, ceiling(seq_along(x[,1]) / (size / nbatch))), FUN = function(x) colMeans(x))),ncol = ncol,byrow = TRUE)
-    out   = var(x = batch) / nbatch
+    out   = var(x = batch) / (nbatch -1)
     
     if (is.matrix(out) && dim(out) == c(1,1)) {
     out = as.vector(out)
     }
+    
+  } else if(type == "obm"){
+    
+    out = as.vector(mcmcse::mcse(x, method = "obm")$se^2)
     
   } else if(type == "iseq.bm"){
     
@@ -96,15 +101,17 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
 
 #' The spectral density at zero.
 #' @description Calculate the variance of the mean with the spectrum at zero estimator.
-#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the sapa package and \link[psd]{psdcore} the PSD package.
+#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the sapa package, \link[psd]{psdcore} from the PSD package and \link[mcmcse]{mcse}from the mcmcse package.
 #' @param x  A numeric vector.
 #' @param method  A character string denoting the method to use in estimating the spectral density function
 #' @param prewhite Prewhite the serie before analysis
+#' @param max.length maximum sample size for aggregation
 #' @return The variance estimator.
 #' @references Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
 #' @references D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
 #' @references Barbour, A. J. and R. L. Parker (2014), "psd: Adaptive, sine multitaper power spectral density estimation for R", Computers & Geosciences Volume 63 February 2014 : 1-8
-#' @import coda sapa psd
+#' @references James M. Flegal, John Hughes and Dootika Vats. (17-08-2015). mcmcse: Monte Carlo Standard Errors for MCMC. R package version 1.1-2. Riverside, CA and Minneapolis, MN.
+#' @import coda sapa psd mcmcse
 #' @examples 
 #'n = 1000
 #'ar = c(0.9)
@@ -116,12 +123,21 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
 #'nse::nse.spec0(x = Ts1, method = "AR", prewhite = FALSE)
 #'  
 #'@export
-nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper","asm"), prewhite = FALSE) {
+nse.spec0 <- function(x, method = c('AR','bartlett','wosa','tukey'), prewhite = FALSE, max.length = 200) {
   scale = 1
   if(is.vector(x)){
     x = matrix(x,ncol = 1)
   }
   f.error.multivariate(x)
+  
+  if (!is.null(max.length) && nrow(x) > max.length) {
+    batch.size <- ceiling(nrow(x)/max.length)
+    x <- aggregate(ts(x, frequency=batch.size), nfreq = 1, FUN=mean)
+  }
+  else {
+    batch.size <- 1
+  }
+  
   size = dim(x)[1]
   if (prewhite == TRUE){
     ar.model = psd::prewhiten(as.vector(x), AR.max = 1,plot = FALSE)
@@ -132,19 +148,14 @@ nse.spec0 <- function(x, method = c("AR","lag window","wosa","multitaper","asm")
   
   if(method == "AR"){
     spec0 = coda::spectrum0.ar(x)$spec
-  }else if(method == "lag window") {
-    spec0 = sapa::SDF(x, method="lag window", single.sided = TRUE)[1]
-    
   }else if(method == "wosa") {
     spec0 = sapa::SDF(x, method="wosa", single.sided = TRUE)[1]
-    
-  }else if(method == "multitaper") {
-    spec0 = sapa::SDF(x, method="multitaper", single.sided = TRUE)[1]
-    
-  }else if(method == "asm") {
-    spec0 = psd::psdcore(as.vector(x))$spec[1]
+  }else if(method == "tukey") {
+    return(as.vector((mcmcse::mcse(x, method = "tukey")$se)^2)*scale)
+  }else if(method == "bartlett") {
+    return(as.vector((mcmcse::mcse(x, method = "bartlett")$se)^2)*scale)
   }else{
-    stop("Invalid spec.type : must be one of c('AR',lag window','wosa','multitaper','asm')")
+    stop("Invalid spec.type : must be one of c('AR','bartlett','wosa','tukey')")
   }
   spec0 = spec0*scale
   out = spec0/size

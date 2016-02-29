@@ -9,7 +9,7 @@ nse.geyer(x, type, nbatch = 30, iseq.type = "pos")
 \arguments{
 \item{x}{A numeric vector or a matrix(only for type "bm").}
 
-\item{type}{The type c("iseq","bm","iseq.bm").}
+\item{type}{The type c("iseq","bm","obm","iseq.bm").}
 
 \item{nbatch}{An optional parameter for the type m and iseq.bm.}
 
@@ -24,6 +24,7 @@ Calculate Geyer (1992) NSE estimator.
 \details{
 The type "iseq" is a wrapper around \link[mcmc]{initseq} from the MCMC package and gives the positive intial sequence estimator.
  The type "bm" is the batch mean estimator.
+ The type "obm" is the overlapping batch mean estimator.
  The type "iseq.bm" is a combinaison of the two.
 }
 \examples{

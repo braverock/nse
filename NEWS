@@ -1,3 +1,7 @@
+Changes in Version 1-00.05
+  o Deleted some spectral density estimator and added others
+  o Added overlap batch-means estimator, mcmcse package wrapper
+  o added batch option in spectral density for smoother spectral density estimator.
 Changes in Version 1-00.04
   o Corrected NAMESPACE
 Changes in Version 1-00.03
