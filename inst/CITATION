@@ -1,0 +1,19 @@
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("AdMit")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+vers <- paste("version", meta$Version)
+
+citHeader("To cite 'nse' in publications use:")
+
+citEntry(entry = "manual",
+	 title = "Numerical Standard Error Estimators",
+	 author = personList(person("Keven","Bluteau"),
+	                     person("David","Ardia"),
+                       person("Lennart","Hoogerheide","F.")),
+   year = year,
+	 note = vers,
+	 url = "https://r-forge.r-project.org/projects/nse/",
+	 textVersion =
+         paste("Keven Bluteau, David Ardia, Lennart F. Hoogerheide(", year,"). ",
+               "'NSE': Numerical standard error calculation in 'R'. ", vers, ".", sep = "")
+)
+
