@@ -5,15 +5,27 @@ vers <- paste("version", meta$Version)
 citHeader("To cite 'nse' in publications use:")
 
 citEntry(entry = "manual",
-	 title = "Numerical Standard Error Estimators",
-	 author = personList(person("Keven","Bluteau"),
-	                     person("David","Ardia"),
-                       person("Lennart","Hoogerheide","F.")),
+	 title = "Numerical standard errors computation in R",
+	 author = personList(person("David","Ardia"),
+			     person("Keven","Bluteau")),
    year = year,
 	 note = vers,
 	 url = "https://r-forge.r-project.org/projects/nse/",
 	 textVersion =
-         paste("Keven Bluteau, David Ardia, Lennart F. Hoogerheide(", year,"). ",
-               "'NSE': Numerical standard error calculation in 'R'. ", vers, ".", sep = "")
+         paste("David Ardia and Keven Bluteau (", year,"). ",
+               "'nse': Numerical standard errors computation in 'R'. ", vers, ".", sep = "")
 )
 
+citEntry(entry = "misc",
+	 title = "Comparison of Multiple Methods for Computing Numerical Standard Errors: An Extensive Monte Carlo Study",
+	 author = personList(person("David","Ardia"),
+			     person("Keven","Bluteau"),
+                             person("Lennart","Hoogerheide")),
+         year = "2016",
+	 url = "http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741587",
+         textVersion = paste(
+                "Ardia, D., Bluteau K., and Hoogerheide, Lennart F. (2016).",
+                "Comparison of Multiple Methods for Computing Numerical Standard Errors: An Extensive Monte Carlo Study.",
+                "Working paper.",
+                "URL http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741587")
+)

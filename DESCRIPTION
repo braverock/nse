@@ -1,17 +1,15 @@
 Package: nse
-Version: 1-00.06
-Date: 2016-02-03
-Title: Numerical Standard Error Estimators
+Version: 1-00.07
+Date: 2016-03-03
+Title: Numerical Standard Errors Computation in R
 Authors@R: c(person("Keven", "Bluteau", role = c("aut", "cre"),
              email = "Keven.Bluteau@unine.ch"),
              person("David", "Ardia", role = c("aut"),
-             email = "David.Ardia@unine.ch"),
-             person("Lennart", "Hoogehereide", role = "ctb"))
+             email = "David.Ardia@unine.ch"))
 Author: Keven Bluteau [aut, cre],
-        David Ardia [aut],
-        Lennart Hoogehereide [ctb]
+        David Ardia [aut]
 Maintainer: Keven Bluteau <Keven.Bluteau@unine.ch>
-Description: Offer mutliple ways to calculate numerical standard error (NSE) of
+Description: Offers mutliple ways to calculate numerical standard errors (NSE) of
     univariate (or multivariate in some cases) time series.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.0), coda, mcmc, np, sandwich, sapa, psd, mcmcse
