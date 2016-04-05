@@ -1,3 +1,5 @@
+Changes in Version 1-00.08
+  o Fixed bug that occurs when compiling documentation or using devtools::document() 
 Changes in Version 1-00.07
   o Citation modified
   o Reference modified
@@ -8,13 +10,13 @@ Changes in Version 1-00.06
 Changes in Version 1-00.05
   o Deleted some spectral density estimator and added others
   o Added overlap batch-means estimator, mcmcse package wrapper
-  o added batch option in spectral density for smoother spectral density estimator.
+  o Added batch option in spectral density for smoother spectral density estimator.
 Changes in Version 1-00.04
   o Corrected NAMESPACE
 Changes in Version 1-00.03
-  o added psd package for another spectral density estimator
-  o added prewhitening otion for spectral density estimator 
+  o Added psd package for another spectral density estimator
+  o Added prewhitening otion for spectral density estimator 
 Changes in Version 1-00.02
-  o fixed bug in Roxygen documentation
+  o Fixed bug in Roxygen documentation
 Changes in Version 1-00.01
-  o first version released
+  o First version released

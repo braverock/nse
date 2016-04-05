@@ -30,13 +30,13 @@
     q       = 1 #characteristic exponent of Bartlett kernel
     k1      = 1 #generalized derivative of Bartlett kernel at origin
     intk2   = 2/3 #squared integral of Bartlett kernel
-    intx2k2 = 1/15 #2th-order moment" of Bartlett kernel
+    intx2k2 = 1/15 #2th-order moment of Bartlett kernel
     kernel  = f.bartlett
   } else if (kernel == "Parzen") {
     q       = 2 #characteristic exponent of Parzen kernel
     k1      = 6 #generalized derivative of Parzen kernel at origin
     intk2   = 151/280 #squared integral of Parzen kernel
-    intx2k2 = 929/295680 #4th-order moment" of Bartlett kernel
+    intx2k2 = 929/295680 #4th-order moment of Parzen kernel
     kernel  = f.parzen
 
   } else {

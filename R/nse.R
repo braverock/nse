@@ -294,6 +294,8 @@ nse.hiruk <- function(x, prewhite = FALSE, type = "Bartlett") {
 #' @references Politis, Dimitris N., and Joseph P. Romano. "The stationary bootstrap." Journal of the American Statistical association 89.428 (1994): 1303-1313.
 #' @references Hayfield, Tristen, and Jeffrey S. Racine. "Nonparametric econometrics: The np package." Journal of statistical software 27.5 (2008): 1-32.
 #' @import np Rcpp
+#' @useDynLib nse
+#' @importFrom Rcpp evalCpp   
 #' @examples  
 #'n = 1000
 #'ar = c(0.9,0.6)
