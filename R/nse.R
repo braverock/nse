@@ -316,7 +316,7 @@ nse.hiruk <- function(x, prewhite = FALSE, type = "Bartlett") {
 #'@export
 nse.boot <- function(x, nb, type = "stationary", b = NULL){
   if (is.null(b)){
-    b = np::b.star(data = x, round = TRUE)
+    blockSize = np::b.star(data = x, round = TRUE)
     if(type == "stationary"){
       b = blockSize[1,1]
     } else if(type == "circular"){
