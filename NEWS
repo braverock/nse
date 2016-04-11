@@ -1,3 +1,5 @@
+Changes in Version 1-00.09
+  o Added glm spectrum estimation and constant block bootstrap estimation
 Changes in Version 1-00.08
   o Fixed bug that occurs when compiling documentation or using devtools::document() 
 Changes in Version 1-00.07

@@ -123,7 +123,7 @@ nse.geyer <- function(x, type, nbatch = 30, iseq.type = "pos") {
 #'nse::nse.spec0(x = Ts1, method = "AR", prewhite = FALSE)
 #'  
 #'@export
-nse.spec0 <- function(x, method = c('AR','bartlett','wosa','tukey'), prewhite = FALSE, max.length = 200) {
+nse.spec0 <- function(x, method = c('AR', 'glm', 'bartlett', 'wosa', 'tukey'), prewhite = FALSE, max.length = 200) {
   scale = 1
   if(is.vector(x)){
     x = matrix(x,ncol = 1)
@@ -148,6 +148,9 @@ nse.spec0 <- function(x, method = c('AR','bartlett','wosa','tukey'), prewhite = 
   
   if(method == "AR"){
     spec0 = coda::spectrum0.ar(x)$spec
+  }else if(method == "glm"){
+    spec0 = coda::spectrum0(x)$spec
+  }
   }else if(method == "wosa") {
     spec0 = sapa::SDF(x, method="wosa", single.sided = TRUE)[1]
   }else if(method == "tukey") {
@@ -312,14 +315,17 @@ nse.hiruk <- function(x, prewhite = FALSE, type = "Bartlett") {
 #'nse::nse.boot(x = Ts1, nb =  nb, type = "circular")
 #'nse::nse.boot(x = Ts, nb =  nb, type = "circular")
 #'@export
-nse.boot <- function(x, nb, type = "stationary" ){
-  blockSize = np::b.star(data = x, round = TRUE)
-  if(type == "stationary"){
-    blockSize = blockSize[1,1]
-  } else if(type == "circular"){
-    blockSize = blockSize[1,2]
+nse.boot <- function(x, nb, type = "stationary", b = NULL){
+  if (is.null(b)){
+    b = np::b.star(data = x, round = TRUE)
+    if(type == "stationary"){
+      b = blockSize[1,1]
+    } else if(type == "circular"){
+      b = blockSize[1,2]
+    }
   }
-  out = var(f.bootstrap(x = x, nb = nb, statistic = colMeans, b = blockSize, type = type)$statistic)
+ 
+  out = var(f.bootstrap(x = x, nb = nb, statistic = colMeans, b = b, type = type)$statistic)
   
   if (is.matrix(out) && dim(out) == c(1,1)) {
     out = as.vector(out)
