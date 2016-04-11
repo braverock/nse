@@ -150,7 +150,6 @@ nse.spec0 <- function(x, method = c('AR', 'glm', 'bartlett', 'wosa', 'tukey'), p
     spec0 = coda::spectrum0.ar(x)$spec
   }else if(method == "glm"){
     spec0 = coda::spectrum0(x)$spec
-  }
   }else if(method == "wosa") {
     spec0 = sapa::SDF(x, method="wosa", single.sided = TRUE)[1]
   }else if(method == "tukey") {
