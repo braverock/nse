@@ -4,43 +4,51 @@
 \alias{nse.hiruk}
 \title{Hirukawa NSE estimators.}
 \usage{
-nse.hiruk(x, prewhite = FALSE, type = "Bartlett")
+nse.hiruk(x, type = c("bartlett", "parzen"), lag.prewhite = 0)
 }
 \arguments{
 \item{x}{A numeric vector.}
 
-\item{prewhite}{A bool indicating if the time-serie will be prewhitened before analysis.}
-
 \item{type}{The type of kernel used c("Bartlett","Parzen").}
+
+\item{lag.prewhite}{Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)}
 }
 \value{
 The variance estimator.
 }
 \description{
-Calculate the variance of the mean with the kernel based variance estimator by Andrews (1991) using Hirukawa (2010) automatic bandwidth estimator.
+Calculate the variance of the mean with the kernel based variance estimator 
+by Andrews (1991) using Hirukawa (2010) automatic bandwidth estimator.
 }
 \details{
-This is a wrapper around \link[sandwich]{lrvar} from the sandwich package and use Hirukawa (2010) automatic bandwidth estimator.
+This is a wrapper around \link[sandwich]{lrvar} from the sandwich package 
+and use Hirukawa (2010) automatic bandwidth estimator.
 }
 \examples{
-n = 1000
-ar = c(0.9)
-mean = c(1)
-sd = c(10)
+n    = 1000
+ar   = 0.9
+mean = 1
+sd   = 1
+
+set.seed(1234) 
+x = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
  
-Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
- 
-nse::nse.hiruk(x = Ts1, type = "Bartlett")
-nse::nse.hiruk(x = Ts1, prewhite = TRUE, type = "Bartlett")
- 
-nse::nse.hiruk(x = Ts1, type = "Parzen")
-nse::nse.hiruk(x = Ts1, prewhite = TRUE, type = "Parzen")
+nse.hiruk(x = x, type = "bartlett", lag.prewhite = 0)
+nse.hiruk(x = x, type = "bartlett", lag.prewhite = 1)
+nse.hiruk(x = x, type = "bartlett", lag.prewhite = NULL)
+
+nse.hiruk(x = x, type = "parzen", lag.prewhite = 0)
+nse.hiruk(x = x, type = "parzen", lag.prewhite = 1)
+nse.hiruk(x = x, type = "parzen", lag.prewhite = NULL)
+
 }
 \references{
 Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
 
-Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
+Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance 
+matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
 
-Hirukawa, Masayuki. "A two-stage plug-in bandwidth selection and its implementation for covariance estimation." Econometric Theory 26.03 (2010): 710-743.
+Hirukawa, Masayuki. "A two-stage plug-in bandwidth selection and its implementation 
+for covariance estimation." Econometric Theory 26.03 (2010): 710-743.
 }
 

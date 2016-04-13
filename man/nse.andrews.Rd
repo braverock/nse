@@ -4,14 +4,15 @@
 \alias{nse.andrews}
 \title{Andrews NSE estimators.}
 \usage{
-nse.andrews(x, prewhite = FALSE, type = "Bartlett")
+nse.andrews(x, type = c("bartlett", "parzen", "tukey", "qs", "trunc"),
+  lag.prewhite = 0)
 }
 \arguments{
 \item{x}{A numeric vector or matrix.}
 
-\item{prewhite}{A bool indicating if the time-serie will be prewhitened before analysis.}
-
 \item{type}{The type of kernel used c("Bartlett","Parzen","Quadratic Spectral","Truncated","Tukey-Hanning").}
+
+\item{lag.prewhite}{Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)}
 }
 \value{
 The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
@@ -23,44 +24,41 @@ Calculate the variance of the mean with the kernel based variance estimator indt
 This is a wrapper around \link[sandwich]{lrvar} from the sandwich package and use Andrews (1991) automatic bandwidth estimator.
 }
 \examples{
+n    = 1000
+ar   = 0.9
+mean = 1
+sd   = 1
+ 
+set.seed(1234)   
+x = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
+ 
+nse.andrews(x = x, type = "bartlett", lag.prewhite = 0)
+nse.andrews(x = x, type = "bartlett", lag.prewhite = 1)
+nse.andrews(x = x, type = "bartlett", lag.prewhite = NULL)
 
-n = 1000
-ar = c(0.9,0.6)
-mean = c(1,5)
-sd = c(10,2)
-Ts1 = as.vector(arima.sim(n = n, list(ar = ar[1]), sd = sd[1]) + mean[1])
-Ts2 = as.vector(arima.sim(n = n, list(ar = ar[2]), sd = sd[2]) + mean[2])
-Ts = cbind(Ts1,Ts2)
- 
-nse::nse.andrews(x = Ts1, type = "Bartlett")
-nse::nse.andrews(x = Ts, type = "Bartlett")
-nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Bartlett")
-nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Bartlett")
- 
-nse::nse.andrews(x = Ts1, type = "Parzen")
-nse::nse.andrews(x = Ts, type = "Parzen")
-nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Parzen")
-nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Parzen")
- 
-nse::nse.andrews(x = Ts1, type = "Quadratic Spectral")
-nse::nse.andrews(x = Ts, type = "Quadratic Spectral")
-nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Quadratic Spectral")
-nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Quadratic Spectral")
- 
-nse::nse.andrews(x = Ts, type = "Truncated")
-nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Truncated")
-nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Truncated")
- 
-nse::nse.andrews(x = Ts1, type = "Tukey-Hanning")
-nse::nse.andrews(x = Ts, type = "Tukey-Hanning")
-nse::nse.andrews(x = Ts1, prewhite = TRUE, type = "Tukey-Hanning")
-nse::nse.andrews(x = Ts, prewhite = TRUE, type = "Tukey-Hanning")
+nse.andrews(x = x, type = "parzen", lag.prewhite = 0)
+nse.andrews(x = x, type = "parzen", lag.prewhite = 1)
+nse.andrews(x = x, type = "parzen", lag.prewhite = NULL)
+
+nse.andrews(x = x, type = "tukey", lag.prewhite = 0)
+nse.andrews(x = x, type = "tukey", lag.prewhite = 1)
+nse.andrews(x = x, type = "tukey", lag.prewhite = NULL)
+
+nse.andrews(x = x, type = "qs", lag.prewhite = 0)
+nse.andrews(x = x, type = "qs", lag.prewhite = 1)
+nse.andrews(x = x, type = "qs", lag.prewhite = NULL)
+
+nse.andrews(x = x, type = "trunc", lag.prewhite = 0)
+nse.andrews(x = x, type = "trunc", lag.prewhite = 1)
+nse.andrews(x = x, type = "trunc", lag.prewhite = NULL)
 }
 \references{
 Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
 
-Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
+Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent 
+covariance matrix estimation." Econometrica: Journal of the Econometric Society 59.03 (1991): 817-858.
 
-Newey, Whitney K., and Kenneth D. West. "A simple, positive semi-definite, heteroskedasticity and autocorrelationconsistent covariance matrix.", Econometrica: Journal of the Econometric Society 55.03 (1987) : 703-708.
+Newey, Whitney K., and Kenneth D. West. "A simple, positive semi-definite, 
+heteroskedasticity and autocorrelationconsistent covariance matrix.", Econometrica: Journal of the Econometric Society 55.03 (1987) : 703-708.
 }
 

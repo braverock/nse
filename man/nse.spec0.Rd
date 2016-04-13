@@ -4,17 +4,15 @@
 \alias{nse.spec0}
 \title{The spectral density at zero.}
 \usage{
-nse.spec0(x, method = c("AR", "bartlett", "wosa", "tukey"),
-  prewhite = FALSE, max.length = 200)
+nse.spec0(x, type = c("ar", "glm", "wosa", "bartlett", "tukey"),
+  lag.prewhite = 0)
 }
 \arguments{
 \item{x}{A numeric vector.}
 
-\item{method}{A character string denoting the method to use in estimating the spectral density function}
+\item{type}{A character string denoting the method to use in estimating the spectral density function}
 
-\item{prewhite}{Prewhite the serie before analysis}
-
-\item{max.length}{maximum sample size for aggregation}
+\item{lag.prewhite}{Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)}
 }
 \value{
 The variance estimator.
@@ -23,26 +21,49 @@ The variance estimator.
 Calculate the variance of the mean with the spectrum at zero estimator.
 }
 \details{
-This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the sapa package, \link[psd]{psdcore} from the PSD package and \link[mcmcse]{mcse}from the mcmcse package.
+This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the 
+sapa package, \link[psd]{psdcore} from the PSD package and \link[mcmcse]{mcse}from the mcmcse package.
 }
 \examples{
-n = 1000
-ar = c(0.9)
-mean = c(1)
-sd = c(10)
+n    = 1000
+ar   = 0.9
+mean = 1
+sd   = 1
+set.seed(1234)   
+x = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
  
-Ts1 = as.vector(arima.sim(n = n, list(ar = ar), sd = sd) + mean)
- 
-nse::nse.spec0(x = Ts1, method = "AR", prewhite = FALSE)
+nse.spec0(x = x, type = "ar", lag.prewhite = 0)
+nse.spec0(x = x, type = "ar", lag.prewhite = 1)
+nse.spec0(x = x, type = "ar", lag.prewhite = NULL)
+
+nse.spec0(x = x, type = "glm", lag.prewhite = 0)
+nse.spec0(x = x, type = "glm", lag.prewhite = 1)
+nse.spec0(x = x, type = "glm", lag.prewhite = NULL)
+
+nse.spec0(x = x, type = "wosa", lag.prewhite = 0)
+nse.spec0(x = x, type = "wosa", lag.prewhite = 1)
+nse.spec0(x = x, type = "wosa", lag.prewhite = NULL)
+
+nse.spec0(x = x, type = "bartlett", lag.prewhite = 0)
+nse.spec0(x = x, type = "bartlett", lag.prewhite = 1)
+nse.spec0(x = x, type = "bartlett", lag.prewhite = NULL)
+
+nse.spec0(x = x, type = "tukey", lag.prewhite = 0)
+nse.spec0(x = x, type = "tukey", lag.prewhite = 1)
+nse.spec0(x = x, type = "tukey", lag.prewhite = NULL)
  
 }
 \references{
-Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis for MCMC." R news 6.1 (2006): 7-11.
+Plummer, Martyn, et al. "CODA: Convergence diagnosis and output analysis 
+for MCMC." R news 6.1 (2006): 7-11.
 
-D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
+D.B. Percival and A. Walden "Spectral Analysis for Physical Applications: 
+Multitaper and Conventional Univariate Techniques". Cambridge University Press (1993).
 
-Barbour, A. J. and R. L. Parker (2014), "psd: Adaptive, sine multitaper power spectral density estimation for R", Computers & Geosciences Volume 63 February 2014 : 1-8
+Barbour, A. J. and R. L. Parker (2014), "psd: Adaptive, sine multitaper power spectral 
+density estimation for R", Computers & Geosciences Volume 63 February 2014 : 1-8
 
-James M. Flegal, John Hughes and Dootika Vats. (17-08-2015). mcmcse: Monte Carlo Standard Errors for MCMC. R package version 1.1-2. Riverside, CA and Minneapolis, MN.
+James M. Flegal, John Hughes and Dootika Vats. (17-08-2015). mcmcse: Monte Carlo 
+Standard Errors for MCMC. R package version 1.1-2. Riverside, CA and Minneapolis, MN.
 }
 
