@@ -24,7 +24,7 @@ f.prewhite = function(x, ar.order = 1) {
   ar.param = as.vector(ar.fit$ar)
   ar.order = as.numeric(ar.fit$order)
   
-  scale = 1 / (1 - sum(ar.param))^2
+  scale = 1 / (1 - sum(ar.param^2))
   if (length(scale) == 0) {
     scale = 1
   }

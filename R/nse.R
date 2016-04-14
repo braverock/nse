@@ -151,14 +151,6 @@ nse.spec0 = function(x, type = c("ar", "glm", "wosa", "bartlett", "tukey"), lag.
   f.error.multivariate(x)
   
   n = dim(x)[1]
-  # !!! DA old implementation
-  #browser()
-  #ar.model = psd::prewhiten(as.vector(x), AR.max = 1, plot = FALSE)
-  #x = ar.model$prew_ar
-  #scale = 1 / (1 - ar.model$ardfit$ar)^2
-  #if (length(scale) == 0) {
-  #  scale = 1
-  #}
   tmp   = f.prewhite(x, ar.order = lag.prewhite) 
   x     = tmp$ar.resid
   scale = tmp$scale
@@ -184,6 +176,7 @@ nse.spec0 = function(x, type = c("ar", "glm", "wosa", "bartlett", "tukey"), lag.
   out   = unname(out)
   return(out)
 }
+
 #' Newey-West NSE estimators.
 #' @description Calculate the variance of the mean with the Newey West (1987, 1994) HAC estimator.
 #' @description This is a wrapper around \link[sandwich]{lrvar} from the sandwich package.
@@ -215,7 +208,6 @@ nse.spec0 = function(x, type = c("ar", "glm", "wosa", "bartlett", "tukey"), lag.
 #' nse.nw(x = x, lag.prewhite = NULL)
 #'@export
 nse.nw <- function(x, lag.prewhite = 0) {
-  
   tmp = f.prewhite(x, ar.order = lag.prewhite) 
   lag.prewhite = tmp$ar.order
   out = sandwich::lrvar(x = x, type = "Newey-West", prewhite = lag.prewhite, adjust = TRUE)
@@ -266,7 +258,6 @@ nse.nw <- function(x, lag.prewhite = 0) {
 #'nse.andrews(x = x, type = "trunc", lag.prewhite = NULL)
 #'@export
 nse.andrews <- function(x, type = c("bartlett", "parzen", "tukey", "qs", "trunc"), lag.prewhite = 0) {
-  
   tmp = f.prewhite(x, ar.order = lag.prewhite) 
   lag.prewhite = tmp$ar.order
   type.sandwich = f.type.sandwich(type.in = type)
