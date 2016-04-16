@@ -21,8 +21,7 @@ The variance estimator.
 Calculate the variance of the mean with the spectrum at zero estimator.
 }
 \details{
-This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the 
-sapa package, \link[psd]{psdcore} from the PSD package and \link[mcmcse]{mcse}from the mcmcse package.
+This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package and \link[mcmcse]{mcse}from the mcmcse package.
 }
 \examples{
 n    = 1000

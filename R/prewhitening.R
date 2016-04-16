@@ -24,9 +24,20 @@ f.prewhite = function(x, ar.order = 1) {
   ar.param = as.vector(ar.fit$ar)
   ar.order = as.numeric(ar.fit$order)
   
-  scale = 1 / (1 - sum(ar.param^2))
-  if (length(scale) == 0) {
-    scale = 1
+  v.x = var(x)
+  v.e = var(ar.resid)
+  
+  scale = 1
+  if (ar.order == 1) {
+    if (abs(ar.param) < 1) {
+      scale = 1 / (1 - ar.param^2)
+    } else {
+      scale = v.x / v.e
+    }
+  }
+  if (ar.order > 1) {
+    # DA here we should check stationarity
+    scale = v.x / v.e
   }
   
   out = list(ar.resid = ar.resid, ar.param = ar.param, ar.order = ar.order, scale = scale)

@@ -14,6 +14,8 @@ nse.boot(x, nb, type = c("stationary", "circular"), b = NULL,
 
 \item{type}{The bootstrap schemes c("stationary","circular").}
 
+\item{b}{the block length. If NULL automatic block length selection.}
+
 \item{lag.prewhite}{Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)}
 }
 \value{

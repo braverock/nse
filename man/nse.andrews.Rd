@@ -5,14 +5,16 @@
 \title{Andrews NSE estimators.}
 \usage{
 nse.andrews(x, type = c("bartlett", "parzen", "tukey", "qs", "trunc"),
-  lag.prewhite = 0)
+  lag.prewhite = 0, approx = c("AR(1)", "ARMA(1,1)"))
 }
 \arguments{
 \item{x}{A numeric vector or matrix.}
 
-\item{type}{The type of kernel used c("Bartlett","Parzen","Quadratic Spectral","Truncated","Tukey-Hanning").}
+\item{type}{The type of kernel used c("bartlett","parzen","qs","trunc","tukey").}
 
 \item{lag.prewhite}{Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)}
+
+\item{approx}{Andrews approximation c("AR(1)", "ARMA(1,1)")}
 }
 \value{
 The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.

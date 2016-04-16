@@ -98,8 +98,7 @@ nse.geyer = function(x, type = c("iseq", "bm", "obm", "iseq.bm"), nbatch = 30, i
 
 #' The spectral density at zero.
 #' @description Calculate the variance of the mean with the spectrum at zero estimator.
-#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package, \link[sapa]{SDF} from the 
-#' sapa package, \link[psd]{psdcore} from the PSD package and \link[mcmcse]{mcse}from the mcmcse package.
+#' @details  This is a wrapper around \link[coda]{spectrum0.ar} from the CODA package and \link[mcmcse]{mcse}from the mcmcse package.
 #' @param x A numeric vector.
 #' @param type A character string denoting the method to use in estimating the spectral density function
 #' @param lag.prewhite Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)
@@ -219,8 +218,9 @@ nse.nw <- function(x, lag.prewhite = 0) {
 #' @description Calculate the variance of the mean with the kernel based variance estimator indtroduced by Andrews (1991).
 #' @details  This is a wrapper around \link[sandwich]{lrvar} from the sandwich package and use Andrews (1991) automatic bandwidth estimator.
 #' @param x A numeric vector or matrix.
+#' @param type The type of kernel used c("bartlett","parzen","qs","trunc","tukey").
 #' @param lag.prewhite Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)
-#' @param type The type of kernel used c("Bartlett","Parzen","Quadratic Spectral","Truncated","Tukey-Hanning").
+#' @param approx Andrews approximation c("AR(1)", "ARMA(1,1)")
 #' @return The variance estimator in the univariate case or the variance-covariance matrix estimator in the multivariate case.
 #' @references Zeileis, Achim. "Econometric computing with HC and HAC covariance matrix estimators." (2004).
 #' @references Andrews, Donald WK. "Heteroskedasticity and autocorrelation consistent 
@@ -257,11 +257,11 @@ nse.nw <- function(x, lag.prewhite = 0) {
 #'nse.andrews(x = x, type = "trunc", lag.prewhite = 1)
 #'nse.andrews(x = x, type = "trunc", lag.prewhite = NULL)
 #'@export
-nse.andrews <- function(x, type = c("bartlett", "parzen", "tukey", "qs", "trunc"), lag.prewhite = 0) {
+nse.andrews <- function(x, type = c("bartlett", "parzen", "tukey", "qs", "trunc"), lag.prewhite = 0, approx = c("AR(1)", "ARMA(1,1)")) {
   tmp = f.prewhite(x, ar.order = lag.prewhite) 
   lag.prewhite = tmp$ar.order
   type.sandwich = f.type.sandwich(type.in = type)
-  out = sandwich::lrvar(x = x, type = "Andrews", prewhite = lag.prewhite, adjust = TRUE, kernel = type.sandwich)
+  out = sandwich::lrvar(x = x, type = "Andrews", prewhite = lag.prewhite, adjust = TRUE, kernel = type.sandwich, approx = approx)
   out = unname(out)
   return(out)
 }
@@ -320,6 +320,7 @@ nse.hiruk <- function(x, type = c("bartlett", "parzen"), lag.prewhite = 0) {
 #' @param x  A numeric vector or a matrix.
 #' @param nb The number of bootstrap replication.
 #' @param type The bootstrap schemes c("stationary","circular").
+#' @param b the block length. If NULL automatic block length selection.
 #' @param lag.prewhite Prewhite the serie before analysis (integer or NULL, i.e. automatic selection)
 #' @return The variance estimator in the univariate case or the variance-covariance matrix 
 #' estimator in the multivariate case.
